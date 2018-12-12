@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Number guessing game</title>
+
+    <style>
+        html {
+        font-family: sans-serif;
+      }
+      body {
+        width: 50%;
+        max-width: 800px;
+        min-width: 480px;
+        margin: 0 auto;
+      }
+      .lastResult {
+        color: white;
+        padding: 3px;
+      }
+    </style>
+</head>
+
+<body>
+    <h1>Number guessing game</h1>
+
+    <p>We have selected a random number between 1 and 100. See if you can guess it in 10 turns or fewer. We'll tell you if your guess was too high or too low.</p>
+
+    <div class="form">
+        <label for="guessField">Enter a guess: </label><input type="text" id="guessField" class="guessField">
+        <input type="submit" value="Submit guess" class="guessSubmit">
+    </div>
+
+    <div class="resultParas">
+        <p class="guesses"></p>
+        <p class="lastResult"></p>
+        <p class="lowOrHi"></p>
+    </div>
+
+    <script>
+        var randomNumber = Math.floor(Math.random() * 100) + 1;
+
+        var guesses = document.querySelector('.guesses');
+        var lastResult = document.querySelector('.lastResult');
+        var lowOrHi = document.querySelector('.lowOrHi');
+
+        var guessSubmit = document.querySelector('.guessSubmit');
+        var guessField = document.querySelector('.guessField');
+
+        var guessCount = 1;
+        var resetButton;
+
+        function checkGuess() {
+            var userGuess = Number(guessField.value); //value가 현재 입력된 값인가봐
+            //Number. 는 값이 숫자라는 걸 알 수 있는 메소드.
+            if (guessCount === 1) {
+                guesses.textContent = 'previous guesses: ';
+            }
+            guesses.textContent += userGuess + ' ';
+            //현재의 userGuess 값에 마지막 guesses 문장을 추가하고, 끝에 공백을 더함으로서 각각의 추측한 수끼리 간격을 두고 보여진다.-- 왜 userGuess가 앞에 있는거죠. 뒤로 가는거 아닌가요.
+
+            if (userGuess === randomNumber) {
+                lastResult.textContent = 'Congratulations! You got it right!';
+                lastResult.style.backgroundColor = 'green';
+                lowOrHi.textContent = '';
+                setGameOver();
+            } else if (guessCount === 10) {
+                lastResult.textContent = '!!!Game Over!!!';
+                setGameOver();
+            } else {
+                lastResult.textContent = 'Wrong!';
+                lastResult.style.backgroundColor = 'red';
+                if (userGuess < randomNumber) {
+                    lowOrHi.textContent = 'Last guess was too low!';
+                } else if (userGuess > randomNumber) {
+                    lowOrHi.textContent = 'Last guess was too high!';
+                }
+            }
+
+
+            guessCount++; //한 차례 더함.
+            guessField.value = ''; //텍스트필드 공란으로 만들기.
+            guessField.focus(); //텍스트필드에 커서 위치시키기.
+        }
+
+        guessSubmit.addEventListener('click', checkGuess);
+        //event listener: 이벤트 발생 후 발생된 이벤트 처리.
+        //addEventListener()는 두개의 입력(인수)를 가지는 메소드. 특히 addEventListener() 안에서는 함수의 괄호가 필요없다.(위의 checkGuess)처럼
+
+        /*
+        function checkGuess() {
+            alert('I am a placeholder');
+        }
+
+        checkGuess();
+
+        var name = 'bingo';
+        name;
+
+        var hello = 'says hello!';
+        hello;
+
+        var greeting = name + hello;
+        greeting;
+
+        name += 'says hello!';
+        name = name + 'says hello!';
+
+        !==
+        means Non - equality(is it not the same ? )
+        */
+
+    </script>
+</body>
+
+</html>
